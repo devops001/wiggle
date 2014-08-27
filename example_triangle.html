@@ -1,6 +1,7 @@
 <html>
   <head>
     <title>triangle</title>
+    <meta charset="utf-8"/>
 
     <script id="vertex_shader" type="text/vertex-shader">
       attribute vec3 position;
@@ -23,8 +24,8 @@
 
   <body>
     <canvas id="canvas"></canvas>
-
     <script id="main" type="text/javascript">
+
       var canvas = document.getElementById("canvas");
       var gl     = canvas.getContext("experimental-webgl");
       var shader = initShader(gl);
@@ -72,11 +73,8 @@
       }
       
       startRendering();
-    </script>
 
+    </script>
   </body>
 </html>
 
-
-    
-    
