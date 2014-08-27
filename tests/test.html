@@ -1,0 +1,52 @@
+<html>
+  <head>
+    <title>test</title>
+    <meta charset="utf-8"/>
+    <script src="../glMatrix.js"></script>
+    <script src="../wiggle.js"></script>
+
+    <script id="vertex_shader" type="text/vertex-shader">
+      attribute vec3 position;
+      uniform   mat4 perspective;
+      uniform   mat4 modelView;
+      void main(void) {
+        gl_Position = perspective * modelView * vec4(position, 1.0);
+      }
+    </script>
+
+    <script id="fragment_shader" type="text/fragment-shader">
+      void main(void) {
+        gl_FragColor = vec4(0.3, 0.5, 0.7, 1.0);
+      }
+    </script>
+
+    <script id="shader_functions" type="text/javascript">
+      function setupShaderLocations(gl, shaderProgram) {
+        shaderProgram.loc = {};
+        shaderProgram.loc.position    = gl.getAttribLocation(shaderProgram,  "position");
+        shaderProgram.loc.perspective = gl.getUniformLocation(shaderProgram, "perspective");
+        shaderProgram.loc.modelView   = gl.getUniformLocation(shaderProgram, "modelView");
+        gl.enableVertexAttribArray(shaderProgram.loc.position);
+      }
+
+      function setupShaderMatrices(shaderProgram, canvas) {
+        shaderProgram.mat4 = {};
+        shaderProgram.mat4.perspective = mat4.create();
+        shaderProgram.mat4.modelView   = mat4.create();
+        mat4.perspective(45.0, canvas.width/canvas.height, 0.1, 100.0, shaderProgram.mat4.perspective);
+        mat4.identity(shaderProgram.mat4.modelView);
+      }
+
+      function setShaderUniformValues(gl, shaderProgram) {
+        gl.uniformMatrix4fv(shaderProgram.loc.modelView,   false, shaderProgram.mat4.modelView);
+        gl.uniformMatrix4fv(shaderProgram.loc.perspective, false, shaderProgram.mat4.perspective);
+      }
+    </script>
+  </head>
+  <body>
+    <canvas id="canvas"></canvas>
+    <script src="test.js"></script>
+  </body>
+</html>
+
+    
