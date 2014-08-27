@@ -29,27 +29,6 @@ function initShader(gl, canvas) {
     return shader;
   }
 
-  function setupShaderLocations(gl, shaderProgram) {
-    shaderProgram.loc = {};
-    shaderProgram.loc.position          = gl.getAttribLocation(shaderProgram,  "position");
-    shaderProgram.loc.modelViewMatrix   = gl.getUniformLocation(shaderProgram, "modelViewMatrix");
-    shaderProgram.loc.perspectiveMatrix = gl.getUniformLocation(shaderProgram, "perspectiveMatrix");
-    gl.enableVertexAttribArray(shaderProgram.loc.position);
-  }
-  
-  function setupShaderMatrices(shaderProgram, canvas) {
-    shaderProgram.mat4 = {};
-    shaderProgram.mat4.perspective = mat4.create();
-    shaderProgram.mat4.modelView   = mat4.create();
-    mat4.perspective(45.0, canvas.width/canvas.height, 0.1, 100.0, shaderProgram.mat4.perspective);
-    mat4.identity(shaderProgram.mat4.modelView);
-  }
-  
-  function setShaderUniformValues(gl, shaderProgram) {
-    gl.uniformMatrix4fv(shaderProgram.loc.modelViewMatrix,   false, shaderProgram.mat4.modelView);
-    gl.uniformMatrix4fv(shaderProgram.loc.perspectiveMatrix, false, shaderProgram.mat4.perspective);
-  }
-
   var vertexSource   = document.getElementById("vertex_shader").text;
   var fragmentSource = document.getElementById("fragment_shader").text;
   var vertexShader   = createShader(gl.VERTEX_SHADER, vertexSource);
@@ -68,10 +47,6 @@ function initShader(gl, canvas) {
   }
 
   gl.useProgram(shaderProgram);
-
-  setupShaderLocations(gl, shaderProgram);
-  setupShaderMatrices(shaderProgram, canvas);
-  setShaderUniformValues(gl, shaderProgram);
 
   return shaderProgram;
 }
