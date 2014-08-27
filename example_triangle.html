@@ -5,8 +5,8 @@
 
     <script id="vertex_shader" type="text/vertex-shader">
       attribute vec3 position;
-      uniform   mat4 modelViewMatrix;
       uniform   mat4 perspectiveMatrix;
+      uniform   mat4 modelViewMatrix;
       void main(void) {
         gl_Position = perspectiveMatrix * modelViewMatrix * vec4(position, 1.0);
       }
@@ -27,52 +27,35 @@
     <script id="main" type="text/javascript">
 
       var canvas = document.getElementById("canvas");
-      var gl     = canvas.getContext("experimental-webgl");
-      var shader = initShader(gl);
-      
-      canvas.width  = 400;
-      canvas.height = 300;
-      initGL(gl, canvas);
-      
-      shader.loc = {};
-      shader.loc.position          = gl.getAttribLocation(shader,  "position");
-      shader.loc.modelViewMatrix   = gl.getUniformLocation(shader, "modelViewMatrix");
-      shader.loc.perspectiveMatrix = gl.getUniformLocation(shader, "perspectiveMatrix");
-      
-      gl.enableVertexAttribArray(shader.loc.position);
-      
-      shader.mat4 = {};
-      shader.mat4.perspective = mat4.create();
-      shader.mat4.modelView   = mat4.create();
-      
-      mat4.perspective(45.0, canvas.width/canvas.height, 0.1, 100.0, shader.mat4.perspective);
-      mat4.identity(shader.mat4.modelView);
+      var gl     = initGL(canvas);
+      var shader = initShader(gl, canvas);
       
       var vertices = [
          0.0,  1.0, 0.0,
         -1.0, -1.0, 0.0,
          1.0, -1.0, 0.0
       ];
+
+      var buffer = setupBuffer(gl, vertices, 3);
       
-      var buffer = gl.createBuffer();
-      gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
-      buffer.itemSize = 3;
-      buffer.numItems = 3;
-      
+      startRendering();
+     
       function render() {
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
         gl.useProgram(shader);
-      
-        gl.uniformMatrix4fv(shader.loc.modelViewMatrix,   false, shader.mat4.modelView);
-        gl.uniformMatrix4fv(shader.loc.perspectiveMatrix, false, shader.mat4.perspective);
-      
         gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-        gl.vertexAttribPointer(shader.loc.position, buffer.itemSize, gl.FLOAT, false, 0, 0);
-        gl.drawArrays(gl.TRIANGLES, 0, buffer.numItems);
+        gl.vertexAttribPointer(shader.loc.position, buffer.numFloatsPerVertex, gl.FLOAT, false, 0, 0);
+        gl.drawArrays(gl.TRIANGLES, 0, buffer.numVertices);
       }
-      
-      startRendering();
+
+      function setupBuffer(gl, vertices, numFloatsPerVertex) {
+        var buffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+        buffer.numFloatsPerVertex = numFloatsPerVertex;
+        buffer.numVertices        = vertices.length / numFloatsPerVertex;
+        return buffer;
+      }
 
     </script>
   </body>
