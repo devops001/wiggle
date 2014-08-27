@@ -1,17 +1,34 @@
 wiggle
 ======
 
-Simple webgl helpers. 
+Simple webgl helpers.
 
 Functions:
 
-    initGL(gl,canvas)  //<- sets common gl flags
-    initShader(gl)     //<- compiles & sets up the shader for use
-    render()           //<- called 60 times per second. override it.
-    startRendering()   //<- call this to start calling render().
-    stopRendering()    //<- call this to stop calling render().
+    initGL(canvas)          //<- creates & returns "gl"
+    initShader(gl, canvas)  //<- compiles & sets up the shader program with defaults
+    render()                //<- called 60 times per second. override it.
+    startRendering()        //<- call this to start calling render().
+    stopRendering()         //<- call this to stop calling render().
 
-Example:
+Simple Usage:
+
+```
+var canvas = document.getElementById("canvas");
+var gl     = initGL(canvas);
+var shader = initShader(gl, canvas);
+
+// setup some buffers(s)...
+
+function render() {
+  // draw...
+}
+
+startRendering();
+```
+
+
+Full Example:
 
     https://github.com/devops001/wiggle/blob/master/example_triangle.html
 
