@@ -1,4 +1,6 @@
 
+
+
 var canvas = document.getElementById("canvas");
 var gl     = initGL(canvas);
 var shader = initShader(gl, canvas);
