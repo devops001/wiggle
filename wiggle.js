@@ -2,16 +2,33 @@
 // File:      wiggle.js
 // Purpose:   A few simple helper functions to get webgl up & running
 // Author:    Ryan McDonald <devops001@gmail.com> 
-// Date:      2014.08.25
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 function initGL(canvas) {
-  var gl = canvas.getContext("webgl");
-  gl.clearColor(0.2, 0.3, 0.4, 1.0);
-  gl.enable(gl.DEPTH_TEST);
-  gl.depthFunc(gl.LEQUAL);
-  gl.viewport(0, 0, canvas.width, canvas.height);
-  return gl;
+
+  function setupFocusTracking() {
+    function isHidden() {
+      return document.hidden || document.webkitHidden || document.msHidden;
+    }
+    function focusChanged() {
+      window.isHidden = isHidden();
+    }
+    document.addEventListener("visibilitychange",       focusChanged);
+    document.addEventListener("webkitvisibilitychange", focusChanged);
+    document.addEventListener("msvisibilitychange",     focusChanged);
+  }
+
+  function setupGL() {
+    var gl = canvas.getContext("webgl");
+    gl.clearColor(0.2, 0.3, 0.4, 1.0);
+    gl.enable(gl.DEPTH_TEST);
+    gl.depthFunc(gl.LEQUAL);
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    return gl;
+  }
+
+  setupFocusTracking();
+  return setupGL();
 }
 
 function initShader(gl, canvas) {
@@ -57,8 +74,10 @@ function render() {
 
 function startRendering() {
   function renderLoop() {
-    window.currentFrame = window.requestAnimationFrame(renderLoop);
-    render();
+    if (!window.isHidden) {
+      window.currentFrame = window.requestAnimationFrame(renderLoop);
+      render();
+    }
   }
   renderLoop();
 }

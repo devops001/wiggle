@@ -1,9 +1,12 @@
 wiggle
 ======
 
-Simple webgl helpers.
+webgl helper functions. 
 
-Functions:
+* Attempts to call render() 60 times per second
+* Pauses rendering when out of focus
+
+Interface:
 
     initGL(canvas)          //<- creates & returns "gl"
     initShader(gl, canvas)  //<- compiles & sets up the shader program with defaults
@@ -18,19 +21,19 @@ var canvas = document.getElementById("canvas");
 var gl     = initGL(canvas);
 var shader = initShader(gl, canvas);
 
-// setup some buffers(s)...
+// ...
 
 function render() {
-  // draw...
+  // set shader values, bind buffers, draw triangles...
 }
 
 startRendering();
 ```
 
-
 Full Example:
 
     https://github.com/devops001/wiggle/blob/master/example_triangle.html
 
-    glMatrix.js is from:  https://github.com/toji/gl-matrix
+    
+glMatrix.js is from:  https://github.com/toji/gl-matrix
 
