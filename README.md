@@ -30,9 +30,7 @@ function render() {
 startRendering();
 ```
 
-Full Example:
-
-    https://github.com/devops001/wiggle/blob/master/example_triangle.html
+[Examples](examples/)
 
     
 glMatrix.js is from:  https://github.com/toji/gl-matrix

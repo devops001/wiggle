@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // File:      wiggle.js
-// Purpose:   A few simple helper functions to get webgl up & running
+// Purpose:   webgl helper functions. 
 // Author:    Ryan McDonald <devops001@gmail.com> 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -64,7 +64,6 @@ function initShader(gl, canvas) {
   }
 
   gl.useProgram(shaderProgram);
-
   return shaderProgram;
 }
 
